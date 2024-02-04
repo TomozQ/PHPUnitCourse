@@ -1,9 +1,15 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Type\VoidType;
 
 class OrderTest extends TestCase
 {
+  public function tearDown(): void
+  {
+    Mockery::close();
+  }
+
   public function testOrderIsProcessed()
   {
     $gateway = $this->getMockBuilder('PaymentGateway')
@@ -20,4 +26,17 @@ class OrderTest extends TestCase
     
     $this->assertTrue($order->process());
   }
+
+  // public function testOrderIsProcessedUsingMockery()
+  // {
+  //   $gateway = Mockery::mock('PaymentGateway');
+  //   $gateway->shouldReceivce('charge')
+  //           ->once()
+  //           ->with(200)
+  //           ->andReturn(true);
+
+  //   $order = new Order($gateway);
+  //   $order->amount = 200;
+  //   $this->assertTrue($order->process());
+  // }
 }
