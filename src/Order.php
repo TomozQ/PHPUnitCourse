@@ -8,8 +8,19 @@
 class Order
 {
   /**
-   * Amount
+   * Quantity
    * @var int
+   */
+  public $quantity;
+
+  /**
+   * Unit price
+   * @var float
+   */
+  public $unit_price;
+  /**
+   * Amount
+   * @var float
    */
   public $amount = 0;
 
@@ -22,15 +33,28 @@ class Order
   /**
    * Constructor
    * 
+   * @param int $quantity Quantity
+   * @param float $unit_price Unit price
+   * 
    * @return void
    */
-  public function __construct(PaymentGateway $gateway)
+  public function __construct(int $quantity, float $unit_price)
   {
-    $this->gateway = $gateway;
+    $this->quantity = $quantity;
+    $this->unit_price = $unit_price;
+
+    $this->amount = $quantity * $unit_price;
   }
 
-  public function process()
+  /**
+   * Charge the total amount
+   * 
+   * @param PaymentGateway $gateway Payment gateway object
+   * 
+   * @return void
+   */
+  public function process(PaymentGateway $gateway)
   {
-    return $this->gateway->charge($this->amount);
+    $gateway->charge($this->amount);
   }
 }
